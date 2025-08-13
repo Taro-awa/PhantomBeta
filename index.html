@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幻影β - 官方网站</title>
+    <style>
+        /* 全局样式 - 简约风格 */
+        :root {
+            --primary: #4285F4; 
+            --secondary: #34A853;
+            --dark: #202124;
+            --light: #FBBC05;
+            --accent: #EA4335;
+            --text: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Source Han Sans CN', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--dark);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background-image: url('./images/logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 2rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: bold;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            background: linear-gradient(135deg, #f9f9f9 0%, #e6f4ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+        
+        .hero h1 span {
+            color: var(--primary);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .hero-image {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 50%;
+            height: 80%;
+            /* 图片文件: hero-character.png */
+            background-image: url('./images/hero-character.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: right bottom;
+            z-index: 1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        /* 游戏特色 */
+        .features {
+            padding: 5rem 2rem;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--dark);
+        }
+        
+        .section-title span {
+            color: var(--primary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* 武器展示 */
+        .weapons {
+            padding: 5rem 2rem;
+            background-color: #f5f5f5;
+        }
+        
+        .weapons-slider {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .weapon {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .weapon.active {
+            display: block;
+        }
+        
+        .weapon-image {
+            height: 300px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        /* 武器图片文件命名: weapon-1.png 到 weapon-6.png */
+        .weapon-1 .weapon-image { background-image: url('./images/weapon-1.png'); }
+        .weapon-2 .weapon-image { background-image: url('./images/weapon-2.png'); }
+        .weapon-3 .weapon-image { background-image: url('./images/weapon-3.png'); }
+        .weapon-4 .weapon-image { background-image: url('./images/weapon-4.png'); }
+        .weapon-5 .weapon-image { background-image: url('./images/weapon-5.png'); }
+        .weapon-6 .weapon-image { background-image: url('./images/weapon-6.png'); }
+        
+        .weapon-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .weapon-info h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .slider-dot.active {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        /* 僵尸展示 */
+        .zombies {
+            padding: 5rem 2rem;
+            background-color: white;
+        }
+        
+        .zombies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .zombie-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .zombie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .zombie-image {
+            height: 200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .zombie-normal .zombie-image { background-image: url('./images/zombie-normal.png'); }
+        .zombie-helmet .zombie-image { background-image: url('./images/zombie-helmet.png'); }
+        .zombie-armored .zombie-image { background-image: url('./images/zombie-armored.png'); }
+        .zombie-giant .zombie-image { background-image: url('./images/zombie-giant.png'); }
+        .zombie-toxic .zombie-image { background-image: url('./images/zombie-toxic.png'); }
+        .zombie-ninja .zombie-image { background-image: url('./images/zombie-ninja.png'); }
+
+                
+        .zombie-info {
+            padding: 1.5rem;
+        }
+        
+        .zombie-info h3 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .zombie-info p {
+            color: #666;
+        }
+        
+        /* 下载区域 */
+        .download {
+            padding: 5rem 2rem;
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+        }
+        
+        .download h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .download p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .download-box {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            text-align: left;
+        }
+        
+        .download-box h3 {
+            color: var(--light);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .download-box p {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .download-link {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .download-link:hover {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+        }
+        
+        .platforms {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .platform-button {
+            background-color: white;
+            color: var(--dark);
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .platform-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.2);
+        }
+        
+        .platform-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .windows .platform-icon { background-image: url('./images/windows-icon.png'); }
+        .mac .platform-icon { background-image: url('./images/mac-icon.png'); }
+        .steam .platform-icon { background-image: url('./images/steam-icon.png'); }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .twitter .social-icon { background-image: url('./images/twitter-icon.png'); }
+        .facebook .social-icon { background-image: url('./images/facebook-icon.png'); }
+        .instagram .social-icon { background-image: url('./images/instagram-icon.png'); }
+        .discord .social-icon { background-image: url('./images/discord-icon.png'); }
+        
+        .copyright {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 100px;
+            }
+            
+            .hero-content {
+                margin-bottom: 2rem;
+            }
+            
+            .hero-image {
+                position: relative;
+                width: 100%;
+                height: 300px;
+                background-position: center;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .platforms {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <span>幻影</span>β
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#features">游戏特色</a></li>
+                <li><a href="#weapons">武器库</a></li>
+                <li><a href="#zombies">僵尸类型</a></li>
+                <li><a href="#download">下载</a></li>
+            </ul>
+        </nav>
+    <a href="#download" class="cta-button" style="text-decoration: none;">立即游玩</a>
+</header>
+    
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>末日求生，<span>击退尸潮！</span></h1>
+            <p>在这片被诅咒的废土上，你是最后的希望！拿起武器，杀出重围——简约卡通画风下的末日世界，暗藏致命危机与无限可能！</p>
+            <a href="#download" class="cta-button" style="text-decoration: none;">开始冒险</a>
+    </div>
+    <div class="hero-image"></div>
+</section>
+    
+    <!-- 游戏特色 -->
+    <section class="features" id="features">
+        <h2 class="section-title">游戏<span>特色</span></h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background-image: url('./images/feature-roguelike.png');"></div>
+                <h3>多样关卡</h3>
+                <p>不同关卡的僵尸配置与生存难度截然不同！从第一关到最后一关，充满未知可能！</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background-image: url('./images/feature-weapons.png');"></div>
+                <h3>多样武器</h3>
+                <p>6种独特武器自由组合，打造你的专属战斗风格，策略才是生存的关键！</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background-image: url('./images/feature-zombies.png');"></div>
+                <h3>挑战性敌人</h3>
+                <p>6类僵尸各具特色，从普通僵尸到忍者僵尸，每一关都是智谋与反应的终极试炼！</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 武器展示 -->
+    <section class="weapons" id="weapons">
+        <h2 class="section-title">武器<span>库</span></h2>
+        <div class="weapons-slider">
+            <div class="weapon weapon-1 active">
+                <div class="weapon-image"></div>
+                <div class="weapon-info">
+                    <h3>手枪</h3>
+                    <p>很普通的武器，是你的第一把武器。</p>
+                </div>
+            </div>
+            <div class="weapon weapon-2">
+                <div class="weapon-image"></div>
+                <div class="weapon-info">
+                    <h3>重型手枪</h3>
+                    <p>伤害爆表，超长击退，不然敌人靠近半步！</p>
+                </div>
+            </div>
+            <div class="weapon weapon-3">
+                <div class="weapon-image"></div>
+                <div class="weapon-info">
+                    <h3>冰冻冲锋枪</h3>
+                    <p>射速快且射出的子弹可以冰冻敌人，但是伤害较低。</p>
+                </div>
+            </div>
+            <div class="weapon weapon-4">
+                <div class="weapon-image"></div>
+                <div class="weapon-info">
+                    <h3>突击步枪</h3>
+                    <p>很均衡的武器，可以适应战场的大多数情况。</p>
+                </div>
+            </div>
+            <div class="weapon weapon-5">
+                <div class="weapon-image"></div>
+                <div class="weapon-info">
+                    <h3>激光炮</h3>
+                    <p>发射激光穿透僵尸，适合应对成群的僵尸。</p>
+                </div>
+            </div>
+            <div class="weapon weapon-6">
+                <div class="weapon-image"></div>
+                <div class="weapon-info">
+                    <h3>其他武器</h3>
+                    <p>还有更多武器等你来探索！</p>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+                <div class="slider-dot" data-slide="3"></div>
+                <div class="slider-dot" data-slide="4"></div>
+                <div class="slider-dot" data-slide="5"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 僵尸展示 -->
+    <section class="zombies" id="zombies">
+        <h2 class="section-title">僵尸<span>类型</span></h2>
+        <div class="zombies-grid">
+            <div class="zombie-card zombie-normal">
+                <div class="zombie-image"></div>
+                <div class="zombie-info">
+                    <h3>普通僵尸</h3>
+                    <p>基础敌人，移动较慢但数量众多，容易对付但成群出现时很危险。</p>
+                </div>
+            </div>
+            <div class="zombie-card zombie-helmet">
+                <div class="zombie-image"></div>
+                <div class="zombie-info">
+                    <h3>武装僵尸</h3>
+                    <p>身穿防弹衣，更难击杀，且攻击力更强。</p>
+                </div>
+            </div>
+            <div class="zombie-card zombie-armored">
+                <div class="zombie-image"></div>
+                <div class="zombie-info">
+                    <h3>巨人僵尸</h3>
+                    <p>体型巨大，生命值极高，攻击力强，移动速度缓慢但难以击杀。</p>
+                </div>
+            </div>
+            <div class="zombie-card zombie-giant">
+                <div class="zombie-image"></div>
+                <div class="zombie-info">
+                    <h3>毒气僵尸</h3>
+                    <p>会释放毒气，需要保持距离或快速离开毒气范围。</p>
+                </div>
+            </div>
+            <div class="zombie-card zombie-toxic">
+                <div class="zombie-image"></div>
+                <div class="zombie-info">
+                    <h3>忍者僵尸</h3>
+                    <p>移动速度快，具有隐身能力，需要多加防备。</p>
+                </div>
+            </div>
+            <div class="zombie-card zombie-ninja">
+                <div class="zombie-image"></div>
+                <div class="zombie-info">
+                    <h3>其他僵尸</h3>
+                    <p>更多的僵尸请你自己探索吧！</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 下载区域 -->
+    <section class="download" id="download">
+        <h2>准备好迎接挑战了吗？</h2>
+        <p>立即下载《幻影β》，体验这场紧张刺激的末日生存冒险！</p>
+        
+        <div class="download-box">
+            <h3>HTML版本下载</h3>
+            <p>这是一个HTML版本，可以直接在浏览器中运行，无需安装。</p>
+            <a href="https://share.feijipan.com/s/WIOEGUYb" class="download-link">下载HTML版本</a>
+        </div>
+        
+        <div class="platforms">
+            <a href="#" class="platform-button windows">
+                <div class="platform-icon"></div>
+                Windows（暂无）
+            </a>
+            <a href="#" class="platform-button mac">
+                <div class="platform-icon"></div>
+                macOS（暂无）
+            </a>
+            <a href="#" class="platform-button steam">
+                <div class="platform-icon"></div>
+                Steam（暂无）
+            </a>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="social-links">
+            <a href="#" class="social-link twitter">
+                <div class="social-icon"></div>
+            </a>
+            <a href="#" class="social-link facebook">
+                <div class="social-icon"></div>
+            </a>
+            <a href="#" class="social-link instagram">
+                <div class="social-icon"></div>
+            </a>
+            <a href="#" class="social-link discord">
+                <div class="social-icon"></div>
+            </a>
+        </div>
+        <p class="copyright">© 2025 芋头游戏 工作室. 保留所有权利。</p>
+    </footer>
+    
+    <script>
+        // 武器轮播功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const weapons = document.querySelectorAll('.weapon');
+            const dots = document.querySelectorAll('.slider-dot');
+            let currentSlide = 0;
+            
+            // 自动轮播
+            let slideInterval = setInterval(nextSlide, 3000);
+            
+            function showSlide(n) {
+                weapons.forEach(weapon => weapon.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                weapons[n].classList.add('active');
+                dots[n].classList.add('active');
+                currentSlide = n;
+                
+                // 重置自动轮播计时器
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, 3000);
+            }
+            
+            function nextSlide() {
+                let next = currentSlide + 1;
+                if (next >= weapons.length) next = 0;
+                showSlide(next);
+            }
+            
+            // 点按导航点切换
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                });
+            });
+            
+            // 平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // 滚动时导航栏效果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.boxShadow = '0 2px 15px rgba(0,0,0,0.15)';
+                } else {
+                    header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                }
+            });
+            
+            // 英雄区域浮动动画
+            const heroImage = document.querySelector('.hero-image');
+            function floatAnimation() {
+                const scrollPosition = window.scrollY;
+                heroImage.style.transform = `translateY(${Math.sin(scrollPosition / 200) * 20}px)`;
+                requestAnimationFrame(floatAnimation);
+            }
+            floatAnimation();
+        });
+    </script>
+</body>
+</html>
